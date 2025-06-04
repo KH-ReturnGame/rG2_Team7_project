@@ -6,7 +6,8 @@ public class TurnManager : MonoBehaviour
     public static TurnManager Instance;
 
     public List<Unit> units;
-    private int currentTurnIndex = 0;
+    private int currentIndex = 0;
+    private bool gameOver = false;
 
     private void Awake()
     {
@@ -20,8 +21,11 @@ public class TurnManager : MonoBehaviour
 
     void StartTurn()
     {
-        Unit currentUnit = units[currentTurnIndex];
-        currentUnit.StartTurn();
+        if (gameOver) return;
+
+        Unit currentUnit = units[currentIndex];
+        Debug.Log($"<color=yellow>{currentUnit.unitName}의 턴 시작!</color>");
+        Debug.Log($"{currentUnit.unitName} 체력: {currentUnit.hp}");
 
         if (currentUnit.isPlayer)
         {
@@ -30,28 +34,41 @@ public class TurnManager : MonoBehaviour
         else
         {
             UIManager.Instance.SetButtonInteractable(false);
-            Invoke(nameof(AutoEnemyTurn), 1f);
+            Invoke(nameof(EnemyAction), 1f);
         }
     }
 
-    void AutoEnemyTurn()
+    void EnemyAction()
     {
-        Unit currentUnit = units[currentTurnIndex];
-        currentUnit.Attack();  
+        if (gameOver) return;
+
+        Unit currentUnit = units[currentIndex];
+        currentUnit.Attack();
     }
 
     public void PlayerAttack()
     {
-        Unit currentUnit = units[currentTurnIndex];
+        if (gameOver) return;
+
+        Unit currentUnit = units[currentIndex];
         if (currentUnit.isPlayer)
         {
-            currentUnit.Attack(); 
+            currentUnit.Attack();
         }
     }
 
     public void EndTurn()
     {
-        currentTurnIndex = (currentTurnIndex + 1) % units.Count;
+        if (gameOver) return;
+
+        currentIndex = (currentIndex + 1) % units.Count;
         StartTurn();
+    }
+
+    public void GameOver(string winnerName)
+    {
+        gameOver = true;
+        Debug.Log($"<color=red>게임 종료! 승리자: {winnerName}</color>");
+        UIManager.Instance.SetButtonInteractable(false);
     }
 }

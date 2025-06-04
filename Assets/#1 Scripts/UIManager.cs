@@ -3,8 +3,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public Button attackButton;
     public static UIManager Instance;
+
+    public Button attackButton;
 
     void Awake()
     {
@@ -12,7 +13,7 @@ public class UIManager : MonoBehaviour
         attackButton.onClick.AddListener(OnAttackButtonClicked);
     }
 
-    public void OnAttackButtonClicked()
+    void OnAttackButtonClicked()
     {
         TurnManager.Instance.PlayerAttack();
     }

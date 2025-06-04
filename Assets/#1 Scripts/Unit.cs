@@ -1,4 +1,3 @@
-// Scripts/Unit.cs
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -8,37 +7,40 @@ public class Unit : MonoBehaviour
     public int attack = 10;
     public bool isPlayer;
 
-    protected TurnManager turnManager;
-
-    void Start()
+    public void StartTurn()
     {
-        turnManager = TurnManager.Instance;
-    }
-
-    public virtual void StartTurn()
-    {
-        Debug.Log($"{unitName}의 턴 시작");
+        Debug.Log($"{unitName}의 턴입니다.");
     }
 
     public void Attack()
     {
         Unit target = FindTarget();
+
         if (target != null)
         {
-            Debug.Log($"{unitName}이 {target.unitName}에게 {attack} 데미지!");
             target.hp -= attack;
+            Debug.Log($"{unitName}이(가) {target.unitName}에게 {attack} 데미지!");
+            Debug.Log($"{target.unitName}의 남은 체력: {target.hp}");
+
+            if (target.hp <= 0)
+            {
+                Debug.Log($"{target.unitName}이(가) 쓰러졌습니다!");
+                TurnManager.Instance.GameOver(unitName); // 나의 승리로 게임 종료
+                return;
+            }
         }
 
-        turnManager.EndTurn();
+        TurnManager.Instance.EndTurn();
     }
 
     private Unit FindTarget()
     {
-        foreach (Unit u in turnManager.units)
+        foreach (Unit unit in TurnManager.Instance.units)
         {
-            if (u != this)
-                return u;
+            if (unit != this && unit.hp > 0)
+                return unit;
         }
+
         return null;
     }
 }
