@@ -1938,7 +1938,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -748, y: -297}
+  m_AnchoredPosition: {x: -828, y: -377}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1910068807
@@ -2078,12 +2078,12 @@ GameObject:
   - component: {fileID: 2009177482}
   - component: {fileID: 2009177481}
   m_Layer: 5
-  m_Name: Turn text
+  m_Name: "Turn text (\uBBF8\uC644\uC131)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2009177480
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2366,7 +2366,7 @@ GameObject:
   - component: {fileID: 2123501084}
   - component: {fileID: 2123501083}
   m_Layer: 0
-  m_Name: "Background(\uC774\uBBF8\uC9C0 \uBCC0\uACBD \uC608\uC815)"
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
