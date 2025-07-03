@@ -1,9 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
+
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
+    public TextMeshProUGUI turnText;
 
     public List<Unit> units;
     private int currentIndex = 0;
@@ -24,6 +27,7 @@ public class TurnManager : MonoBehaviour
         if (gameOver) return;
 
         Unit currentUnit = units[currentIndex];
+       turnText.text = $"{currentUnit.unitName}'s Turn";
         Debug.Log($"<color=yellow>{currentUnit.unitName}의 턴 시작!</color>");
         Debug.Log($"{currentUnit.unitName} 체력: {currentUnit.hp}");
 

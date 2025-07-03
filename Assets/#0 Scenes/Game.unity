@@ -2093,6 +2093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55cc9b99698efe049969e3686475a08c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  turnText: {fileID: 2009177481}
   units:
   - {fileID: 1494082844}
   - {fileID: 1297759210}
@@ -2586,12 +2587,12 @@ GameObject:
   - component: {fileID: 2009177482}
   - component: {fileID: 2009177481}
   m_Layer: 5
-  m_Name: "Turn text (\uBBF8\uC644\uC131)"
+  m_Name: Turn text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2009177480
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2608,8 +2609,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -828, y: 515}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -757, y: 472}
+  m_SizeDelta: {x: 416.7759, y: 92.2977}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2009177481
 MonoBehaviour:
@@ -2631,8 +2632,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBAA9\uD45C. \uD574\uB2F9 \uD14D\uC2A4\uD2B8\uC0C1\uC790\uC5D0 \uB204\uAD6C
-    \uD134\uC778\uC9C0 \uD45C\uC2DC"
+  m_text: Player's turn
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2659,8 +2659,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
