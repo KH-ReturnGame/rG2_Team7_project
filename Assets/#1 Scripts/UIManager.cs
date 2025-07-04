@@ -30,21 +30,38 @@ public class UIManager : MonoBehaviour
         TurnManager.Instance.PlayerAttack(15);
     }
 
-    void OnSkill3ButtonClicked()
-    {
-        TurnManager.Instance.PlayerAttack(20);
-    }
-
     void OnHealButtonClicked()
     {
         TurnManager.Instance.PlayerHeal(10);
     }
-
+    
     public void SetButtonInteractable(bool interactable)
     {
+        // 스킬 버튼만 제어
         if (Skil1_Btn != null) Skil1_Btn.interactable = interactable;
         if (Skil2_Btn != null) Skil2_Btn.interactable = interactable;
         if (Skil3_Btn != null) Skil3_Btn.interactable = interactable;
-        if (Heal_Btn != null) Heal_Btn.interactable = interactable;
     }
+    
+    public void SetSkill3Interactable(bool interactable)
+    {
+        if (Skil3_Btn != null)
+            Skil3_Btn.interactable = interactable;
+    }
+    public void SetHealButtonInteractable(bool interactable)
+    {
+        if (Heal_Btn != null)
+            Heal_Btn.interactable = interactable;
+    }
+    void OnSkill3ButtonClicked()
+    {
+        if (TurnManager.Instance.IsSkill3UsedThisTurn())
+            return;
+
+        TurnManager.Instance.PlayerAttack(20);
+        TurnManager.Instance.SetSkill3Used();
+        UIManager.Instance.SetSkill3Interactable(false);
+    }
+
+
 }

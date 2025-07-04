@@ -8,18 +8,16 @@ public class Unit : MonoBehaviour
     public int attack = 10;
     public bool isPlayer;
 
+    public FloatingTextController floatingTextController;
+
     private SpriteRenderer[] spriteRenderers;
     private Color[] originalColors;
-    
-    public GameObject floatingTextPrefab;
 
     private void Awake()
     {
-        // 자식 포함 모든 SpriteRenderer 저장
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
-
-        // 원래 색상 저장
         originalColors = new Color[spriteRenderers.Length];
+
         for (int i = 0; i < spriteRenderers.Length; i++)
         {
             originalColors[i] = spriteRenderers[i].color;
@@ -31,97 +29,73 @@ public class Unit : MonoBehaviour
         Debug.Log($"{unitName}의 턴입니다.");
     }
 
-    public void Attack(int damage)
+    public void Attack(int baseDamage)
     {
         Unit target = FindTarget();
+        if (target == null) return;
 
-        if (target != null)
-        {
-            target.TakeDamage(damage);
-
-            if (target.hp <= 0)
-            {
-                Debug.Log($"{target.unitName}이(가) 쓰러졌습니다!");
-                TurnManager.Instance.GameOver(unitName);
-                return;
-            }
-        }
-
-        TurnManager.Instance.EndTurn();
+        int finalDamage = isPlayer ? baseDamage : Random.Range(10, 26); // 10~25
+        target.TakeDamage(finalDamage, unitName);
     }
 
-    
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, string attackerName)
     {
         hp -= damage;
-        ShowFloatingText($"-{damage}", new Color(1f, 0.3f, 0.3f)); // 연한 빨강
+        hp = Mathf.Max(hp, 0);
 
-        if (isPlayer)
+        ShowFloatingText($"-{damage}", new Color(1f, 0.3f, 0.3f));
+        StartCoroutine(FlashDamageEffect());
+
+        if (hp <= 0)
         {
-            StopCoroutine(nameof(FlashDamageEffect));
-            StartCoroutine(FlashDamageEffect());
+            TurnManager.Instance.GameOver(attackerName);
+            return;
         }
-
-        Debug.Log($"{unitName}이(가) {damage} 데미지를 입었습니다! 남은 체력: {hp}");
     }
- 
 
     public void Heal(int amount)
     {
-        hp += amount;
-        ShowFloatingText($"+{amount}", new Color(0.4f, 1f, 0.4f)); // 연한 초록
+        if (hp >= 100)
+        {
+            Debug.Log("체력이 가득 찼습니다.");
+            return;
+        }
 
-        StopAllCoroutines();
+        int healAmount = Mathf.Min(amount, 100 - hp);
+        hp += healAmount;
+
+        ShowFloatingText($"+{healAmount}", new Color(0.4f, 1f, 0.4f));
         StartCoroutine(FlashHealEffect());
 
-        Debug.Log($"{unitName}이(가) {amount}만큼 회복! 현재 체력: {hp}");
+
+        if (isPlayer)
+            UIManager.Instance.SetHealButtonInteractable(hp < 100);
+    }
+
+    private void ShowFloatingText(string text, Color color)
+    {
+        if (floatingTextController != null)
+        {
+            floatingTextController.ShowText(text, color);
+        }
     }
 
     private IEnumerator FlashHealEffect()
     {
         Color healColor = new Color(178f / 255f, 251f / 255f, 151f / 255f);
-
-        foreach (var sr in spriteRenderers)
-        {
-            sr.color = healColor;
-        }
-
+        foreach (var sr in spriteRenderers) sr.color = healColor;
         yield return new WaitForSeconds(0.5f);
-
-        for (int i = 0; i < spriteRenderers.Length; i++)
-        {
-            spriteRenderers[i].color = originalColors[i];
-        }
+        for (int i = 0; i < spriteRenderers.Length; i++) spriteRenderers[i].color = originalColors[i];
     }
-    
+
     private IEnumerator FlashDamageEffect()
     {
         Color hitColor = new Color(253f / 255f, 124f / 255f, 124f / 255f);
-
-        foreach (var sr in spriteRenderers)
-        {
-            sr.color = hitColor;
-        }
-
+        foreach (var sr in spriteRenderers) sr.color = hitColor;
         yield return new WaitForSeconds(0.5f);
-
-        for (int i = 0; i < spriteRenderers.Length; i++)
-        {
-            spriteRenderers[i].color = originalColors[i];
-        }
+        for (int i = 0; i < spriteRenderers.Length; i++) spriteRenderers[i].color = originalColors[i];
     }
 
-    private void ShowFloatingText(string text, Color color)
-    {
-        if (floatingTextPrefab == null) return;
-
-        GameObject textGO = Instantiate(floatingTextPrefab, transform.position + Vector3.up * 1.5f, Quaternion.identity);
-        textGO.transform.SetParent(GameObject.Find("Canvas").transform, false); // UI용 캔버스 안에
-        FloatingText ft = textGO.GetComponent<FloatingText>();
-        ft.Setup(text, color);
-    }
-
-    
     private Unit FindTarget()
     {
         foreach (Unit unit in TurnManager.Instance.units)
@@ -129,7 +103,6 @@ public class Unit : MonoBehaviour
             if (unit != this && unit.hp > 0)
                 return unit;
         }
-
         return null;
     }
 }
