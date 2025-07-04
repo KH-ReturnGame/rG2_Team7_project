@@ -100,9 +100,14 @@ public class TurnManager : MonoBehaviour
     {
         gameOver = true;
         Debug.Log($"<color=red>게임 종료! 승리자: {winnerName}</color>");
+
         UIManager.Instance.SetButtonInteractable(false);
         UIManager.Instance.SetHealButtonInteractable(false);
+        UIManager.Instance.SetSkill3Interactable(false);
+
+        UIManager.Instance.ShowGameOverPanel(winnerName);
     }
+
     
     public bool IsSkill3UsedThisTurn()
     {
