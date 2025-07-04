@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 
-
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
@@ -19,6 +18,7 @@ public class TurnManager : MonoBehaviour
 
     void Start()
     {
+        UIManager.Instance.SetButtonInteractable(false); // 안전하게 Start에서 호출
         StartTurn();
     }
 
@@ -27,7 +27,7 @@ public class TurnManager : MonoBehaviour
         if (gameOver) return;
 
         Unit currentUnit = units[currentIndex];
-       turnText.text = $"{currentUnit.unitName}'s Turn";
+        turnText.text = $"{currentUnit.unitName}'s Turn";
         Debug.Log($"<color=yellow>{currentUnit.unitName}의 턴 시작!</color>");
         Debug.Log($"{currentUnit.unitName} 체력: {currentUnit.hp}");
 
@@ -47,17 +47,29 @@ public class TurnManager : MonoBehaviour
         if (gameOver) return;
 
         Unit currentUnit = units[currentIndex];
-        currentUnit.Attack();
+        currentUnit.Attack(currentUnit.attack); // 기본 공격 데미지 사용
     }
 
-    public void PlayerAttack()
+    public void PlayerAttack(int damage)
     {
         if (gameOver) return;
 
         Unit currentUnit = units[currentIndex];
         if (currentUnit.isPlayer)
         {
-            currentUnit.Attack();
+            currentUnit.Attack(damage);
+        }
+    }
+
+    public void PlayerHeal(int amount)
+    {
+        if (gameOver) return;
+
+        Unit currentUnit = units[currentIndex];
+        if (currentUnit.isPlayer)
+        {
+            currentUnit.Heal(amount);
+            EndTurn();
         }
     }
 

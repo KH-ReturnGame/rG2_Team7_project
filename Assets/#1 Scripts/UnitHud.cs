@@ -3,8 +3,8 @@ using TMPro;
 
 public class UnitHud : MonoBehaviour
 {
-    public Unit unit;  // 체력을 표시할 유닛
-    public TextMeshProUGUI hpText;  // 머리 위 텍스트
+    public Unit unit;
+    public TextMeshProUGUI hpText;
 
     void Update()
     {
@@ -14,4 +14,3 @@ public class UnitHud : MonoBehaviour
         }
     }
 }
-
