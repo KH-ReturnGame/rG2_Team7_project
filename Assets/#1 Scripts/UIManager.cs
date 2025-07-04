@@ -12,8 +12,8 @@ public class UIManager : MonoBehaviour
     public Button Skil3_Btn;
     public Button Heal_Btn;
 
-    public GameObject gameOverPanel;               // 게임오버 패널
-    public TextMeshProUGUI gameOverText;           // 🔸 TMPro 텍스트
+    public GameObject gameOverPanel;              
+    public TextMeshProUGUI gameOverText;          
 
     public Button restartButton;
     public Button quitButton;
