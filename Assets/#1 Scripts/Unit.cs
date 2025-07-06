@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour
 
     private SpriteRenderer[] spriteRenderers;
     private Color[] originalColors;
-
+    // test
     private void Awake()
     {
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
